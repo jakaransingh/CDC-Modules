@@ -29,21 +29,9 @@ reg pulse_tgle_syncc;
 	  pulse_tgle <= pulse_tgle;
         end		
     end
+  // 2 FLOP SYNC FOR THE SYNCHRONIZATION OF THE PULSE  TO DESTINATION DOMAIN
+  ff_2sync sync(clk_o,rstn_i,pulse_tgle,pulse_tgle_synco);
 
-
-  always_ff @ (posedge clk_o or negedge rstn_i)
-    begin
-      if(!rstn_i)
-        begin
-	  pulse_tgle_synci <= 1'b0;
-	  pulse_tgle_synco <= 1'b0;
-        end		
-      else
-        begin
-	  pulse_tgle_synci <= pulse_tgle;
-	  pulse_tgle_synco <= pulse_tgle_synci;
-        end		
-    end
 
   // PROC BLOCK 2:
   //REGISTER THE SYNC SIGNAL IN DESTINATION DOMAIN
@@ -61,5 +49,38 @@ reg pulse_tgle_syncc;
 
 // RECREATE THE PULSE IN DESTINATION DOMAIN
 assign puls_o = pulse_tgle_syncc ^ pulse_tgle_synco;
+
+endmodule
+
+
+// 2 FF SYNC MODULE
+// THIS CAN ALSO BE PARAMETRISED 
+// BUT FOR THIS SPECIFIC MODULE I CODED A SIMPLE 2 FLOP SYNCRONIZER 
+// YOU CAN REFER ANOTHER MODULE IN THE REPOSITORY FOR THE SAME.
+module ff_2sync
+
+    (
+    input wire  clk,
+    input wire  rstn,
+    input wire  valid_i,
+    output wire valid_o
+    );
+
+    reg [1:0] sync;
+
+    always_ff @ (posedge clk or negedge rstn) 
+    begin
+
+        if (rstn == 1'b0) begin
+            sync <= 2'b0;
+        end
+        else 
+        begin
+            sync <= {sync[0], valid_i};
+        end
+    end
+
+    assign valid_o = sync[1];
+
 
 endmodule
