@@ -1,9 +1,9 @@
-module pulse_sync_toggle(
-  input      clk_i,        //Sending Clock Domain
-  input      clk_o,        //Receiving Clock Domain
-  input      rstn_i,       // Reset
-  input      puls_i,       //Sending Pulse
-  output     puls_o        //Synchronized Pulse 
+module togle_sync(
+  input      clk_i,        //SOURCE CLOCK DOMAIN
+  input      clk_o,        //DESTINATION CLOCK DOMAIN
+  input      rstn_i,       // SOURCE RESET
+  input      puls_i,       //SOURCE PULSE
+  output     puls_o        //SYNC PULSE AT DESTINATION DOMAIN
 );
 
 reg pulse_tgle;      
