@@ -109,7 +109,7 @@ module 2ff_sync
 
     reg [1:0] sync;
 
-    always_ff @ (posedge aclk or negedge arstn) 
+    always_ff @ (posedge clk or negedge rstn) 
     begin
 
         if (rstn == 1'b0) begin
