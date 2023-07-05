@@ -16,7 +16,7 @@ module mux_sync
 	
   ff2_sync sync(clk_i,rstn_i,sync_ctrl,sync_o)
   
-  always_ff@(posedge clk or negedge rstn_i)
+	always_ff @ (posedge clk_i or negedge rstn_i)
   begin
 	if(!rstn_i)
 		data_reg <= 'b0;
